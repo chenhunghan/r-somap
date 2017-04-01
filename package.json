@@ -1,0 +1,71 @@
+{
+  "name": "r-somap",
+  "version": "1.0.0",
+  "description": "Functional Reactive Self-Organizing Map",
+  "main": "build/index.js",
+  "scripts": {
+    "dev": "watch 'npm run build' src",
+    "lint": "eslint src",
+    "test": "jest",
+    "test:watch": "npm test -- --watch",
+    "test:cover": "npm test -- --coverage",
+    "test:watch:src": "npm test -- --watch src",
+    "build": "babel src -d build",
+    "prepublish": "npm run build && npm run test",
+    "release": "np"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "flow"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenhunghan/r-somap.git"
+  },
+  "keywords": [
+    "Self-Organizing Map",
+    "Unsupervised Learning",
+    "Machine Learning"
+  ],
+  "author": "Hung-Han Chen <chenhungh@gmail.com> (http://chenhunghan.github.io)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chenhunghan/r-somap/issues"
+  },
+  "homepage": "https://github.com/chenhunghan/r-somap#readme",
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-eslint": "^7.2.1",
+    "babel-jest": "^19.0.0",
+    "babel-preset-env": "^1.2.2",
+    "babel-preset-flow": "^6.23.0",
+    "eslint": "^3.18.0",
+    "eslint-config-airbnb-base": "^11.1.2",
+    "eslint-plugin-flowtype": "^2.30.4",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jest": "^19.0.1",
+    "flow-bin": "^0.42.0",
+    "jest": "^19.0.2",
+    "np": "^2.13.1",
+    "regenerator-runtime": "^0.10.3",
+    "watch": "^1.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/*.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    }
+  }
+}
