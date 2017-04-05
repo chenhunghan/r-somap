@@ -1,7 +1,7 @@
 // @flow
 import { randomArray } from './randomArray';
 
-export const initMap = (
+export const createMap = (
   mapWidth: number = 8,
   mapHeight: number = 12,
   numberOfAttributes: number = 3,
