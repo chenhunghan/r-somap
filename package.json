@@ -35,9 +35,7 @@
     "url": "https://github.com/chenhunghan/r-somap/issues"
   },
   "homepage": "https://github.com/chenhunghan/r-somap#readme",
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-eslint": "^7.2.1",
@@ -47,6 +45,7 @@
     "eslint": "^3.18.0",
     "eslint-config-airbnb-base": "^11.1.2",
     "eslint-plugin-flowtype": "^2.30.4",
+    "eslint-plugin-fp": "^2.3.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jest": "^19.0.1",
     "flow-bin": "^0.42.0",
