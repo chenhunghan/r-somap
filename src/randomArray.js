@@ -1,3 +1,3 @@
 // @flow
 
-export const randomArray = (length: number): Array<number> => [...new Array(length)].map(() => Math.random());
+export const randomArray = (length: number): Array<number> => Array.from({ length }, () => Math.random());
