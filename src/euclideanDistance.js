@@ -3,7 +3,8 @@ export const euclideanDistance = (vector1: Array<number>, vector2: Array<number>
   if (vector1.length !== vector2.length) {
     throw new Error(`euclidean distance algorithm: two vectors in differnt dimension. vector 1 in ${vector1.length}; vector 2 = ${vector2.length}`);
   }
-  return Math.hypot(...vector1.map((vector1Value, index) => vector1Value - vector2[index]));
+  const d = Math.hypot(...vector1.map((vector1Value, index) => vector1Value - vector2[index]));
+  return Number(d.toFixed(10));
   // above is the same as:
   // let sum = 0;
   // const length = vector1.length; // or vector2.length since they have the same dimension
