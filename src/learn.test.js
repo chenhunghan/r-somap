@@ -51,11 +51,11 @@ test('updateNeighbor should update neighborhood map units by radius = 2', () => 
     BMUWithCoordi: findBMU(SOMap, widthOfSOMap, sampleVector),
     neighborUpdatedMap: [
 			 	 [100, 3, 10], 		 [0, 2, 8],	 		[0, 2, 1],
-			 	 [100, 3, 10], 		 [0, 2, 2],	 		[0, 1, 1],
+			 	 			[100, 3, 10], 		 [0, 2, 2],	 		[0, 1, 1],
 			 	 [101, 3, 10], 		 [0, 3, 8],	 		[0, 0, 1],
-			 	 [100, 3, 10], 		 [0, 2, 8],	 au([0, 2, 1]),
+			 	 			[100, 3, 10], 		 au([0, 2, 8]),	 au([0, 2, 1]),
 			 	 [100, 3, 10], 	au([0, 2, 2]), au([0, 1, 1]),
-      au([101, 3, 10]), au([0, 3, 8]), 		[1000, 9999, 9998],
+      		 au([101, 3, 10]), au([0, 3, 8]), 		[1000, 9999, 9998],
     ],
   })
 ));
@@ -71,11 +71,31 @@ test('learn should update both BMU and its neighbors', () => (
     BMU: findBMU(SOMap, widthOfSOMap, sampleVector),
     SOMap: [
 			 	 [100, 3, 10], 		 [0, 2, 8],	 		[0, 2, 1],
+			 	 			[100, 3, 10], 		 [0, 2, 2],	 		[0, 1, 1],
+			 	 [101, 3, 10], 		 [0, 3, 8],	 		[0, 0, 1],
+			 	 			[100, 3, 10], 		 au([0, 2, 8]),	 au([0, 2, 1]),
+			 	 [100, 3, 10], 	au([0, 2, 2]), au([0, 1, 1]),
+      		 au([101, 3, 10]), au([0, 3, 8]), au([1000, 9999, 9998]),
+    ],
+  })
+));
+
+test('learn should update both BMU and its neighbors when raduis = 1', () => (
+  expect(learn(
+		SOMap,
+    widthOfSOMap,
+    sampleVector,
+    learningRate,
+    1,
+  )).toEqual({
+    BMU: findBMU(SOMap, widthOfSOMap, sampleVector),
+    SOMap: [
+			 	 [100, 3, 10], 		 [0, 2, 8],	 		[0, 2, 1],
 			 	 [100, 3, 10], 		 [0, 2, 2],	 		[0, 1, 1],
 			 	 [101, 3, 10], 		 [0, 3, 8],	 		[0, 0, 1],
-			 	 [100, 3, 10], 		 [0, 2, 8],	 au([0, 2, 1]),
-			 	 [100, 3, 10], 	au([0, 2, 2]), au([0, 1, 1]),
-      au([101, 3, 10]), au([0, 3, 8]), au([1000, 9999, 9998]),
+			 	 [100, 3, 10], 		 [0, 2, 8],	   	[0, 2, 1],
+			 	 [100, 3, 10], 	   [0, 2, 2],	 au([0, 1, 1]),
+         [101, 3, 10], 	au([0, 3, 8]), au([1000, 9999, 9998]),
     ],
   })
 ));
