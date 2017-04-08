@@ -1,64 +1,37 @@
-import { getFinalMap } from './getFinalMap';
-import { updater } from './learn';
+import { stepwiseRecursiveSOM } from './getFinalMap';
+import { train } from './train';
+import { h } from './neighborhoodFunc';
 
-const inputDataSet = [
-  [10000, 10000, 10000],
-  [-1, -1, -1],
-];
 const SOMap = [
-  [-1.2, -1.2, -1.2], [0, 2, 8], [0, 2, 1],
-  [100, 3, 10], [0, 2, 2], [0, 1, 1],
+  [-100, -50, -100], [0, 2, 8], [0, 2, 1],
+      [100, 3, 10], [0, 2, 2], [0, 1, 1],
   [101, 3, 10], [0, 3, 8], [0, 0, 1],
-  [100, 3, 10], [0, 2, 8], [0, 2, 1],
+      [100, 3, 10], [0, 2, 8], [0, 2, 1],
   [100, 3, 10], [0, 2, 2], [0, 1, 1],
-  [101, 3, 10], [0, 3, 8], [1000, 9999, 9998],
+      [101, 3, 10], [0, 3, 8], [1000, 9999, 9998],
 ];
-const widthOfSOMap = 3;
-const baseDenominator = 1;
-const baseLearningRadius = 2;
-const baseLearningRate = 0.5;
-const au0 = mapUnit => updater(inputDataSet[0], mapUnit, baseLearningRate);
-const au1 = mapUnit => updater(inputDataSet[1], mapUnit, baseLearningRate);
 
-test('getFinalMap should get map with 1+ input vector sample(s)', () => (
-  expect(getFinalMap(
-    inputDataSet,
+test('stepwiseRecursiveSOM', () => (
+  expect(stepwiseRecursiveSOM(
+    [[5000, 5000, 5000], [-100, -100, -100]], // inputDataSet
+    SOMap.length, // mapSize
+    Math.sqrt(0.5), // initRadius
+    1, // numberOfEpochs
+    h, // neighborhoodFunc
+    3, // widthOfSOMap
+    SOMap, // initMap
+  )).toEqual(train(train(
     SOMap,
-    widthOfSOMap,
-    1,
-    baseDenominator,
-    baseLearningRadius,
-    baseLearningRate,
-  )).toEqual([
-    au1([-1.2, -1.2, -1.2]), 	 au1([0, 2, 8]),	 		au1([0, 2, 1]),
-    au1([100, 3, 10]), 		     au1([0, 2, 2]),	 		    [0, 1, 1],
-    au1([101, 3, 10]), 		     au1([0, 3, 8]),	 	      [0, 0, 1],
-        [100, 3, 10], 		     au0([0, 2, 8]),	 		au0([0, 2, 1]),
-        [100, 3, 10], 	       au0([0, 2, 2]),	 		au0([0, 1, 1]),
-    au0([101, 3, 10]),	 		   au0([0, 3, 8]),	 		au0([1000, 9999, 9998]),
-  ])
-));
-
-const denominator = (1 + 1 / baseDenominator);
-const learningRateAtSecondCycle = (baseLearningRate / denominator);
-const au0t = mapUnit => updater(inputDataSet[0], mapUnit, learningRateAtSecondCycle);
-const au1t = mapUnit => updater(inputDataSet[1], mapUnit, learningRateAtSecondCycle);
-
-test('getFinalMap should get updated map for timesPerInputSample = 2 or more', () => (
-  expect(getFinalMap(
-    inputDataSet,
-    SOMap,
-    widthOfSOMap,
-    2,
-    baseDenominator,
-    baseLearningRadius,
-    baseLearningRate,
-  )).toEqual([
-    au1t(au1([-1.2, -1.2, -1.2])), 	 au1t(au1([0, 2, 8])),	 		au1([0, 2, 1]),
-    au1t(au1([100, 3, 10])), 		          au1([0, 2, 2]),	 		      [0, 1, 1],
-    au1([101, 3, 10]), 		                au1([0, 3, 8]),	 	        [0, 0, 1],
-        [100, 3, 10], 		                au0([0, 2, 8]),	 		  au0([0, 2, 1]),
-        [100, 3, 10], 	                  au0([0, 2, 2]),	 au0t(au0([0, 1, 1])),
-    au0([101, 3, 10]),	 		        au0t(au0([0, 3, 8])),	 au0t(au0([1000, 9999, 9998])),
-  ])
+    3, // widthOfSOMap
+    [5000, 5000, 5000], // sampleVector
+    0, // t
+    1, // numberOfEpochs
+    Math.sqrt(0.5), // initRadius
+  ).SOMap,
+  3, // widthOfSOMap
+  [-100, -100, -100], // sampleVector
+  0, // t
+  1, // numberOfEpochs
+  Math.sqrt(0.5), // initRadius
+).SOMap)
 ));

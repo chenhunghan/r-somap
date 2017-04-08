@@ -1,48 +1,60 @@
 // @flow
-import { learn } from './learn';
+import { train } from './train';
 import { createMap } from './createMap';
+/**
+* The original, classical or stepwise recursive SOM algorithm.
+*
+<p>
+At time \( t \), one sample vector \( x(t) \) from input data set is selected. By comparing the selected sample vector \( x(t) \) and all map units \( m_{i} \) on the map. One map unit \( m_{c} \) will be the "winner", or the best matching unit(BMU). The selection of BMU is eleborated in section <a href="#findBMU">findBMU function</a>.
 
-export const getFinalMap = (
+After the BMU \( m_{c} \) has been identified, all \( m_{i} \) will be modified. The modification  depends on the mathematical form of the neighborhood function \( h_{ci}(t) \). Which is eleborated in section <a href="#h">h, the neighborhood function</a>. The modification is
+</p>
+
+<span>
+\[ m_{i}(t+1) = m_{i}(t) + h_{ci}(t)[x(t) - m_{i}(t)] \]
+</span>
+
+<p>
+The rates of the modifications \( x(t) - m_{i}(t) \) at different nodes \( m_{i} \) depend on the \( h_{ci}(t) \). Where \( c \) is the best matching unit on map and \( i \) is the index of node in the map.
+<p>
+
+The step wise recursive SOM will reiterated the modifications for given epochs.
+
+<span>
+\[ \sum_t{m_{i}(t+1)} = \sum_t{m_{i}(t)} + \sum_t{h_{ci}(t)[x(t) - m_{i}(t)]} \]
+</span>
+
+
+* @param inputDataSet - the input data set.
+* @param mapSize - the size of the map, i.e., the gird. Default = 5 * Math.sqrt(inputDataSet.length) as suggested by SOM Toolbox; Kohonen (2012) claims "It is not possible to guess or estimate the exact size of the array beforehand. It must be determined by the trial-and-error method, after seeing the quality of the first guess.
+* @param widthOfSOMap - Default is 1.5 * height of map suggested by SOM Toolbox
+* @returns trainedMap - the map that has been trained base on the input data set.
+**/
+export const stepwiseRecursiveSOM = (
   inputDataSet: Array<Array<number>>,
-  initMap: Array<Array<number>> = createMap(8, 12, 3),
-  widthOfSOMap: number = 8,
-  timesPerInputSample: number = 100,
-  baseDenominator: number = 300,
-  baseLearningRadius: number = 3,
-  baseLearningRate: number = 0.3,
+  mapSize?: number = Math.max(150, Math.round(5 * Math.sqrt(inputDataSet.length))),
+  initRadius?: number = Math.sqrt(mapSize) / 2,
+  numberOfEpochs?: number = 10 * mapSize, // at least 10 * mapSize suggested by SOM Toolbox
+  neighborhoodFunc?: Function,
+  widthOfSOMap?: number = Math.round(Math.sqrt(mapSize / 1.5) * 1.5),
+  initMap?: Array<Array<number>> = createMap(
+    widthOfSOMap,
+    Math.ceil(mapSize / widthOfSOMap),
+    inputDataSet[0].length,
+  ),
 ): Array<Array<number>> => {
-  const times = Array.from({ length: timesPerInputSample }, (v, i) => i);
-  return times.reduce(((accumulatingMapWithTime, t) => {
-    const denominator = (1 + t / baseDenominator);
-    const learningRadius = (baseLearningRadius / denominator);
-    const learningRate = (baseLearningRate / denominator);
-    return inputDataSet.reduce((accumulatingMap, sampleVector) => {
-      const newMap = learn(
-        accumulatingMap,
-        widthOfSOMap,
-        sampleVector,
-        learningRate,
-        learningRadius,
-      ).SOMap;
-      return newMap;
-    }, accumulatingMapWithTime);
-  }), initMap);
-  // above is the functional reactive version of:
-  //
-  // let trainedMap = SOMap;
-  // inputDataSet.forEach((sampleVector) => {
-  //   times.forEach((t) => {
-  //     const denominator = (1 + t / baseDenominator);
-  //     const learningRadius = (baseLearningRadius / denominator);
-  //     const learningRate = (baseLearningRate / denominator);
-  //     trainedMap = learn(
-  //       trainedMap,
-  //       widthOfSOMap,
-  //       sampleVector,
-  //       learningRate,
-  //       learningRadius,
-  //     ).SOMap;
-  //   });
-  // });
-  // return trainedMap;
-}
+  const epochs = Array.from({ length: numberOfEpochs }, (v, i) => i);
+  return epochs.reduce(((accumulatingMapWithTime, t) =>
+          inputDataSet.reduce((accumulatingMap, sampleVector) =>
+            train(
+              accumulatingMap,
+              widthOfSOMap,
+              sampleVector,
+              t,
+              numberOfEpochs,
+              initRadius,
+              neighborhoodFunc,
+            ).SOMap,
+          accumulatingMapWithTime)),
+          initMap);
+};
