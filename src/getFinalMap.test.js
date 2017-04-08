@@ -1,4 +1,4 @@
-import { stepwiseRecursiveSOM } from './getFinalMap';
+import { stepwiseRecursiveSOM } from './stepwiseRecursiveSOM';
 import { train } from './train';
 import { h } from './neighborhoodFunc';
 
