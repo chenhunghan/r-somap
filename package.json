@@ -10,6 +10,8 @@
     "test:watch": "npm test -- --watch",
     "test:cover": "npm test -- --coverage",
     "test:watch:src": "npm test -- --watch src",
+    "doc": "documentation serve --watch src/*.js",
+    "builddoc": "documentation build src/** -f html -o docs",
     "build": "babel src -d build",
     "prepublish": "npm run build && npm run test",
     "release": "np"
@@ -42,6 +44,7 @@
     "babel-jest": "^19.0.0",
     "babel-preset-env": "^1.2.2",
     "babel-preset-flow": "^6.23.0",
+    "documentation": "^4.0.0-beta.18",
     "eslint": "^3.18.0",
     "eslint-config-airbnb-base": "^11.1.2",
     "eslint-plugin-flowtype": "^2.30.4",
