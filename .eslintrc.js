@@ -33,13 +33,14 @@ module.exports = {
       "fp/no-mutating-assign": "error",
       "fp/no-mutating-methods": "error",
       "fp/no-mutation": "error",
-      "fp/no-nil": "error",
+      "fp/no-nil": 0,
       "fp/no-proxy": "error",
       "fp/no-rest-parameters": "error",
       "fp/no-this": "error",
       "fp/no-throw": 0,
       "fp/no-unused-expression": 0,
       "fp/no-valueof-field": "error",
+      "fp/no-let": 0,
       "no-var": "error"
     }
 };
